@@ -1,0 +1,18 @@
+package entities;
+
+public class Products {
+	private String name;
+	private Double value;
+	private Integer quantity;
+	
+	public Products() {
+	}
+
+	public Products(String name, Double value, Integer quantity) {
+		this.name = name;
+		this.value = value;
+		this.quantity = quantity;
+	}
+	
+	
+}

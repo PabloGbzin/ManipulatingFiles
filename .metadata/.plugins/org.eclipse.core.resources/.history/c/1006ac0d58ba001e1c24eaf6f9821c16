@@ -1,0 +1,62 @@
+package application;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Scanner;
+
+import entities.Products;
+public class Program {
+
+	public static void main(String[] args) {
+		Locale.setDefault(Locale.US);
+		Scanner sc = new Scanner(System.in);
+		
+		List<Products> list = new ArrayList<>();
+		
+		System.out.print("Enter path file: ");
+		String filePath = sc.nextLine();
+		
+		File file = new File(filePath);
+		String fileStr = file.getParent();
+	
+		new File(fileStr + "\\out").mkdir();
+		
+		try(BufferedReader bfr = new BufferedReader(new FileReader(fileStr + "\\teste.csv"))){
+			String line = bfr.readLine();
+			
+			while(line != null) {
+				String[] vect = line.split(",");	
+				
+				String name = vect[0];
+				double value = Double.parseDouble(vect[1]);
+				int quantity = Integer.parseInt(vect[2]);
+				
+				Products product = new Products(name, value, quantity);
+				list.add(product);
+				line = bfr.readLine();	
+			}	
+			
+		}
+		catch(IOException e) {
+			System.out.println("Error: " + e.getMessage());
+		}
+		
+		try(BufferedWriter bfw = new BufferedWriter(new FileWriter(filePath + "\\summary.csv"))){
+			for(Products products : list) {
+				bfw.write(products.getName() + "," + products.totalValue() + "\n");
+			}
+		}
+		catch(IOException e) {
+			e.printStackTrace();
+		}
+		
+		sc.close();
+	}
+
+}
